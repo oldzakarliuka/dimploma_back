@@ -63,7 +63,6 @@ python-dateutil
 python-slugify
 pytimeparse
 pytz
-pywin32
 pywinpty
 PyYAML
 pyzmq
