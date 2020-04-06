@@ -7,7 +7,6 @@ backcall
 bleach
 Click
 colorama
-curses
 decorator
 defusedxml
 dnspython
