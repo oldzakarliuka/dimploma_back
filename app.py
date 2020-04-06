@@ -1,4 +1,4 @@
-from flask import Flask, escape, request, json, jsonify
+from flask import Flask, escape, request, json, jsonify, abort
 from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS, cross_origin
 
@@ -19,21 +19,28 @@ def hello():
     return "Hello world!"
 
 
-@app.route('/api/v1/nbc_analyze')
+@app.route('/api/v1/nbc_analyze', methods=['POST'])
 def nbc_analyze():
-    phrase = request.args.get("phrase", "hi there I\'m an API")
 
-    rows = list(
-        map(lambda line: line.strip(),
-            prepare_text(phrase)
-            .split('.')
-            )
-    )
-    prediction = nbc.prediction(rows)
-    return jsonify(
-        phrase=phrase,
-        result=prediction
-    )
+    params = request.get_json()
+
+    print(params)
+
+    if 'phrase' in params:
+        phrase = params['phrase']
+        rows = list(
+            map(lambda line: line.strip(),
+                prepare_text(phrase)
+                .split('.')
+                )
+        )
+        prediction = nbc.prediction(rows)
+        return jsonify(
+            phrase=phrase,
+            result=prediction
+        )
+    else:
+        abort(400)
 
 
 if __name__ == "__main__":
