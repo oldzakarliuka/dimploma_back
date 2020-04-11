@@ -12,11 +12,11 @@ class NBC:
             path = "nbc_model.sav"
             self.clf = joblib.load(path)
 
-    def _calc(self, texts):
+    def evaluate(self, texts):
         return self.clf.predict(texts)
 
     def prediction(self, texts):
-        predictions = self._calc(texts)
+        predictions = self.evaluate(texts)
         score = reduce(lambda a, b: a+b, predictions) / len(predictions)
         return (score >= .5).item()
 
