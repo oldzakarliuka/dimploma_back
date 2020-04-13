@@ -1,8 +1,6 @@
 import joblib
 import re
 from functools import reduce
-
-
 class NBC:
 
     def __init__(self, **other):
@@ -10,7 +8,7 @@ class NBC:
             path = other['path']
         else:
             path = "nbc_model.sav"
-            self.clf = joblib.load(path)
+        self.clf = joblib.load(path)
 
     def evaluate(self, texts):
         return self.clf.predict(texts)
