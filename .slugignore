@@ -1,4 +1,4 @@
-*.sav
+.sav
 *.h5
-*.model
-*.npy
+.model
+.npy
