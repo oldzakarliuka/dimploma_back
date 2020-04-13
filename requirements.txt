@@ -4,7 +4,5 @@ flask_cors
 joblib
 keras
 numpy
-pandas
-tensorflow
 scikit-learn
 uwsgi
