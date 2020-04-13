@@ -14,6 +14,7 @@ graph = tf.get_default_graph()
 
 from nbc import NBC, prepare_text
 from rnn import RNN
+from wtv import WTV, prepare_word
 
 app = Flask(__name__)
 api = Api(app)
@@ -25,6 +26,8 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 nbc = NBC()
 
 rnn = RNN()
+
+wtv = WTV()
 
 @app.route('/')
 def hello():
@@ -116,6 +119,55 @@ def rrn_analyze():
                 )
             else:
                 abort(400)
+
+@app.route('/api/v1/similarity')
+def wtv_similarity():
+    first = request.args.get('first')
+    sec = request.args.get('sec')
+
+    if first and sec:
+        f = prepare_word(first)
+        s = prepare_word(sec)
+
+        return jsonify(
+            first=first,
+            sec=sec,
+            similarity=wtv.similarity((f,s))
+        )
+    else:
+        abort(400)
+
+@app.route('/api/v1/closestcosmul', methods=['POST'])
+def wtv_closest_cosmul():
+    params = request.get_json()
+
+    if 'pos' in params and 'neg' in params:
+        pos = [prepare_word(word) for word in params['pos']]
+        neg = [prepare_word(word) for word in params['neg']]
+
+        prediction = wtv.closest_cosmul(pos,neg)
+        return jsonify(
+            pos=pos,
+            neg=neg,
+            result=prediction
+        )
+    else:
+        abort(400)
+
+@app.route('/api/v1/closest', methods=['POST'])
+def wtv_closest():
+    params = request.get_json()
+
+    if 'words' in params:
+        words = [prepare_word(word) for word in params['words']]
+
+        prediction = wtv.closest(words)
+        return jsonify(
+            words=words,
+            result=prediction
+        )
+    else:
+        abort(400)
 
 
 

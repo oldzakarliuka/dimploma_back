@@ -2,6 +2,8 @@ flask
 flask_restful
 flask_cors
 joblib
+keras
+tensorflow
 numpy
 pandas
 scikit-learn
