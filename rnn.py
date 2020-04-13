@@ -12,7 +12,7 @@ class RNN:
         if 'path' in other:
             path = other['path']
         else:
-            path = "rnn.h5"
+            path = "./models/rnn.h5"
         self.clf = load_model(path)
         
         if 'seq_len' in other:
@@ -20,7 +20,7 @@ class RNN:
         else:
           self.MAX_SEQUENCE_LENGTH = 80
         
-        self.tokenizer = joblib.load('tokenizer.sav')
+        self.tokenizer = joblib.load('./models/tokenizer.sav')
             
   def evaluate(self, texts):
 

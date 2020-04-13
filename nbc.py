@@ -7,7 +7,7 @@ class NBC:
         if 'path' in other:
             path = other['path']
         else:
-            path = "nbc_model.sav"
+            path = "./models/nbc_model.sav"
         self.clf = joblib.load(path)
 
     def evaluate(self, texts):

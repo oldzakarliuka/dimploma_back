@@ -3,17 +3,17 @@ from flask import Flask, escape, request, json, jsonify, abort
 from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS, cross_origin
 
-# import tensorflow as tf
-# import keras
+import tensorflow as tf
+import keras
 
 
-# session = keras.backend.get_session()
-# init = tf.global_variables_initializer()
-# session.run(init)
-# graph = tf.get_default_graph()
+session = keras.backend.get_session()
+init = tf.global_variables_initializer()
+session.run(init)
+graph = tf.get_default_graph()
 
 from nbc import NBC, prepare_text
-#from rnn import RNN
+from rnn import RNN
 from wtv import WTV, prepare_word
 
 app = Flask(__name__)
@@ -25,7 +25,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 # NaiveBayesianClassifier
 nbc = NBC()
 
-# rnn = RNN()
+rnn = RNN()
 
 wtv = WTV()
 
@@ -74,51 +74,51 @@ def nbc_array():
     else:
         abort(400)
 
-# @app.route('/api/v1/evaluate', methods=['POST'])
-# def rrn_array():
-#     global graph
-#     with session.as_default():
-#         with graph.as_default():
-#             params = request.get_json()
-#             if 'phrase' in params:
-#                 phrase = params['phrase']
-#                 rows = list(
-#                     map(lambda line: line.strip(),
-#                         prepare_text(phrase)
-#                         .split('.')
-#                         )
-#                 )
-#                 evaluate = rnn.evaluate(rows)
-#                 return jsonify(
-#                     phrase=phrase,
-#                     evaluate=evaluate
+@app.route('/api/v1/evaluate', methods=['POST'])
+def rrn_array():
+    global graph
+    with session.as_default():
+        with graph.as_default():
+            params = request.get_json()
+            if 'phrase' in params:
+                phrase = params['phrase']
+                rows = list(
+                    map(lambda line: line.strip(),
+                        prepare_text(phrase)
+                        .split('.')
+                        )
+                )
+                evaluate = rnn.evaluate(rows)
+                return jsonify(
+                    phrase=phrase,
+                    evaluate=evaluate
 
-#                 )
-#             else: 
-#                 abort(400)
+                )
+            else: 
+                abort(400)
 
-# @app.route('/api/v1/analyze', methods=['POST'])
-# def rrn_analyze():
-#     global graph
-#     with session.as_default():
-#         with graph.as_default():
-#             params = request.get_json()
+@app.route('/api/v1/analyze', methods=['POST'])
+def rrn_analyze():
+    global graph
+    with session.as_default():
+        with graph.as_default():
+            params = request.get_json()
 
-#             if 'phrase' in params:
-#                 phrase = params['phrase']
-#                 rows = list(
-#                     map(lambda line: line.strip(),
-#                         prepare_text(phrase)
-#                         .split('.')
-#                         )
-#                 )
-#                 prediction = rnn.prediction(rows)
-#                 return jsonify(
-#                     phrase=phrase,
-#                     result=prediction
-#                 )
-#             else:
-#                 abort(400)
+            if 'phrase' in params:
+                phrase = params['phrase']
+                rows = list(
+                    map(lambda line: line.strip(),
+                        prepare_text(phrase)
+                        .split('.')
+                        )
+                )
+                prediction = rnn.prediction(rows)
+                return jsonify(
+                    phrase=phrase,
+                    result=prediction
+                )
+            else:
+                abort(400)
 
 @app.route('/api/v1/similarity')
 def wtv_similarity():
