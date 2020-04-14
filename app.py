@@ -169,7 +169,9 @@ def wtv_closest():
     else:
         abort(400)
 
+def main()
+    app.run()
 
 
 if __name__ == "__main__":
-    app.run()
+    main()
