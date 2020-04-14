@@ -3,7 +3,7 @@ import gensim
 class WTV:
 
   def __init__(self, **other):
-    self.model = gensim.models.Word2Vec.load('models/w2v3m.model')
+    self.model = gensim.models.Word2Vec.load('w2v3m.model')
 
   def closest(self, texts):
     print(texts)
