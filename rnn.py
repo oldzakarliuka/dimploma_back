@@ -12,7 +12,7 @@ class RNN:
         if 'path' in other:
             path = other['path']
         else:
-            path = "./models/rnn.h5"
+            path = "models/rnn.h5"
         self.clf = load_model(path)
         
         if 'seq_len' in other:
