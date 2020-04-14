@@ -5,4 +5,4 @@ joblib
 keras
 numpy
 scikit-learn
-uwsgi
+gunicorn
