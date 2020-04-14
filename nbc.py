@@ -4,11 +4,9 @@ from functools import reduce
 class NBC:
 
     def __init__(self, **other):
-        if 'path' in other:
-            path = other['path']
-        else:
-            path = "models/nbc_model.sav"
-        self.clf = joblib.load(path)
+        path = "models/nbc_model.sav"
+        with open(path, 'rb') as f:
+            self.clf = joblib.load(f)
 
     def evaluate(self, texts):
         return self.clf.predict(texts)
