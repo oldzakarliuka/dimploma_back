@@ -4,7 +4,7 @@ from functools import reduce
 class NBC:
 
     def __init__(self, **other):
-        path = "models/nbc_model.sav"
+        path = "nbc_model.sav"
         with open(path, 'rb') as f:
             self.clf = joblib.load(f)
 
