@@ -1,6 +1,5 @@
 import json
 from flask import Flask, escape, request, json, jsonify, abort
-from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS, cross_origin
 
 # import tensorflow as tf
@@ -17,7 +16,6 @@ from nbc import NBC, prepare_text
 from wtv import WTV, prepare_word
 
 app = Flask(__name__)
-api = Api(app)
 
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -141,13 +139,41 @@ def wtv_similarity():
 def wtv_closest_cosmul():
     params = request.get_json()
 
-    if 'pos' in params and 'neg' in params:
+    print(params)
+
+    if 'words' in params:
+        words = [prepare_word(word) for word in params['words']]
+        
+        prediction = wtv.closest_cosmul(words=words)
+        return jsonify(
+            words=words,
+            result=prediction
+        )
+    elif 'pos' in params and 'neg' in params:
         pos = [prepare_word(word) for word in params['pos']]
         neg = [prepare_word(word) for word in params['neg']]
 
-        prediction = wtv.closest_cosmul(pos,neg)
+        prediction = wtv.closest_cosmul(pos=pos,neg=neg)
         return jsonify(
             pos=pos,
+            neg=neg,
+            result=prediction
+        )
+      
+    elif 'pos' in params:
+        pos = [prepare_word(word) for word in params['pos']]
+
+        prediction = wtv.closest_cosmul(pos=pos)
+        return jsonify(
+            pos=pos,
+            result=prediction
+        )
+    elif 'neg' in params:
+        neg = [prepare_word(word) for word in params['neg']]
+
+        prediction = wtv.closest_cosmul(neg=neg)
+
+        return jsonify(
             neg=neg,
             result=prediction
         )
@@ -158,12 +184,42 @@ def wtv_closest_cosmul():
 def wtv_closest():
     params = request.get_json()
 
+    print(params)
+
     if 'words' in params:
         words = [prepare_word(word) for word in params['words']]
-
-        prediction = wtv.closest(words)
+        
+        prediction = wtv.closest(words=words)
         return jsonify(
             words=words,
+            result=prediction
+        )
+    elif 'pos' in params and 'neg' in params:
+        pos = [prepare_word(word) for word in params['pos']]
+        neg = [prepare_word(word) for word in params['neg']]
+
+        prediction = wtv.closest(pos=pos,neg=neg)
+        return jsonify(
+            pos=pos,
+            neg=neg,
+            result=prediction
+        )
+      
+    elif 'pos' in params:
+        pos = [prepare_word(word) for word in params['pos']]
+
+        prediction = wtv.closest(pos=pos)
+        return jsonify(
+            pos=pos,
+            result=prediction
+        )
+    elif 'neg' in params:
+        neg = [prepare_word(word) for word in params['neg']]
+
+        prediction = wtv.closest(neg=neg)
+
+        return jsonify(
+            neg=neg,
             result=prediction
         )
     else:
