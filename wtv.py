@@ -5,27 +5,27 @@ class WTV:
   def __init__(self, **other):
     self.model = gensim.models.Word2Vec.load('w2v3m.model')
 
-  def closest(self, **kwords):
+  def closest(self, topn=10, **kwords):
     if 'words' in kwords:
-      result = self.model.wv.most_similar(kwords['words'])
+      result = self.model.wv.most_similar(kwords['words'], topn=topn)
     elif 'pos' in kwords and 'neg' in kwords:
-      result = self.model.wv.most_similar(positive=kwords['pos'], negative=kwords['neg'])
+      result = self.model.wv.most_similar(positive=kwords['pos'], negative=kwords['neg'], topn=topn)
     elif 'pos' in kwords:
-      result = self.model.wv.most_similar(positive=kwords['pos'])
+      result = self.model.wv.most_similar(positive=kwords['pos'], topn=topn)
     else:
-      result = self.model.wv.most_similar(negative=kwords['neg'])
+      result = self.model.wv.most_similar(negative=kwords['neg'], topn=topn)
 
     return [list(row) for row in result]
 
-  def closest_cosmul(self, **kwords):
+  def closest_cosmul(self, topn=10, **kwords):
     if 'words' in kwords:
-      result = self.model.wv.most_similar(kwords['words'])
+      result = self.model.wv.most_similar(kwords['words'], topn=topn)
     elif 'pos' in kwords and 'neg' in kwords:
-      result = self.model.wv.most_similar_cosmul(positive=kwords['pos'], negative=kwords['neg'])
+      result = self.model.wv.most_similar_cosmul(positive=kwords['pos'], negative=kwords['neg'], topn=topn)
     elif 'pos' in kwords:
-      result = self.model.wv.most_similar_cosmul(positive=kwords['pos'])
+      result = self.model.wv.most_similar_cosmul(positive=kwords['pos'], topn=topn)
     else:
-      result = self.model.wv.most_similar_cosmul(negative=kwords['neg'])
+      result = self.model.wv.most_similar_cosmul(negative=kwords['neg'], topn=topn)
 
     return [list(row) for row in result]
 

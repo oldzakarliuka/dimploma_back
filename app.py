@@ -139,12 +139,14 @@ def wtv_similarity():
 def wtv_closest_cosmul():
     params = request.get_json()
 
-    print(params)
+    if 'count' not in params:
+        abort(400)
+        return
 
     if 'words' in params:
         words = [prepare_word(word) for word in params['words']]
         
-        prediction = wtv.closest_cosmul(words=words)
+        prediction = wtv.closest_cosmul(params['count'], words=words)
         return jsonify(
             words=words,
             result=prediction
@@ -153,7 +155,7 @@ def wtv_closest_cosmul():
         pos = [prepare_word(word) for word in params['pos']]
         neg = [prepare_word(word) for word in params['neg']]
 
-        prediction = wtv.closest_cosmul(pos=pos,neg=neg)
+        prediction = wtv.closest_cosmul(params['count'], pos=pos,neg=neg)
         return jsonify(
             pos=pos,
             neg=neg,
@@ -163,7 +165,7 @@ def wtv_closest_cosmul():
     elif 'pos' in params:
         pos = [prepare_word(word) for word in params['pos']]
 
-        prediction = wtv.closest_cosmul(pos=pos)
+        prediction = wtv.closest_cosmul(params['count'],pos=pos)
         return jsonify(
             pos=pos,
             result=prediction
@@ -171,7 +173,7 @@ def wtv_closest_cosmul():
     elif 'neg' in params:
         neg = [prepare_word(word) for word in params['neg']]
 
-        prediction = wtv.closest_cosmul(neg=neg)
+        prediction = wtv.closest_cosmul(params['count'], neg=neg)
 
         return jsonify(
             neg=neg,
@@ -183,13 +185,14 @@ def wtv_closest_cosmul():
 @app.route('/api/v1/closest', methods=['POST'])
 def wtv_closest():
     params = request.get_json()
-
-    print(params)
+    if 'count' not in params:
+        abort(400)
+        return
 
     if 'words' in params:
         words = [prepare_word(word) for word in params['words']]
         
-        prediction = wtv.closest(words=words)
+        prediction = wtv.closest(params['count'], words=words)
         return jsonify(
             words=words,
             result=prediction
@@ -198,7 +201,7 @@ def wtv_closest():
         pos = [prepare_word(word) for word in params['pos']]
         neg = [prepare_word(word) for word in params['neg']]
 
-        prediction = wtv.closest(pos=pos,neg=neg)
+        prediction = wtv.closest(params['count'], pos=pos,neg=neg)
         return jsonify(
             pos=pos,
             neg=neg,
@@ -208,7 +211,7 @@ def wtv_closest():
     elif 'pos' in params:
         pos = [prepare_word(word) for word in params['pos']]
 
-        prediction = wtv.closest(pos=pos)
+        prediction = wtv.closest(params['count'], pos=pos)
         return jsonify(
             pos=pos,
             result=prediction
@@ -216,7 +219,7 @@ def wtv_closest():
     elif 'neg' in params:
         neg = [prepare_word(word) for word in params['neg']]
 
-        prediction = wtv.closest(neg=neg)
+        prediction = wtv.closest(params['count'], neg=neg)
 
         return jsonify(
             neg=neg,
